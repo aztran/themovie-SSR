@@ -1,7 +1,19 @@
 import React from 'react';
 import Link from 'next/link';
+import { withRouter } from 'next/router'
 
-const Navbar = () => {
+const Navbar = ({ router }) => {
+    const activePath = (router && router.asPath) || '/';
+    const menus = [
+        {
+            title: 'Home',
+            href: '/',
+        },
+        {
+            title: 'Login',
+            href: '/login',
+        },
+    ]
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
             <div className="container">
@@ -14,21 +26,16 @@ const Navbar = () => {
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item active">
-                            <Link href="/" >
-                                <a className="nav-link">Home
-                                    <span className="sr-only">(current)</span>
-                                </a>
-                            </Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link href="/login">
-                                <a className="nav-link">Login
+                        {menus.map(({ title, ...rest }, idx) => (
+                            <li key={title} className={`nav-item ${activePath === rest.as || activePath === rest.href ? 'active' : ''}`} >
+                                <Link {...rest}>
+                                    <a className="nav-link">{title}
+                                        <span className="sr-only">(current)</span>
+                                    </a>
+                                </Link>
+                            </li>
 
-                                </a>
-                            </Link>
-                        </li>
-
+                        ))}
                     </ul>
 
                 </div>
@@ -38,4 +45,4 @@ const Navbar = () => {
     );
 }
 
-export default Navbar;
+export default withRouter(Navbar);

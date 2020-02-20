@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { fetchMovies } from '../action';
 import Select from 'components/Select';
 import SeoConfig from '../components/SeoConfig';
-
+import Skeleton from 'react-loading-skeleton';
 
 const Home = (props) => {
   const Sorting = [
@@ -34,7 +34,7 @@ const Home = (props) => {
   const [search, setSearch] = useState('');
   const [valuSort, setValueSort] = useState(Sorting[0].value)
 
-  const { movies, total_pages, isSearch, sortBy } = props;
+  const { movies, total_pages, loading, sortBy } = props;
   const dispatch = useDispatch();
 
 
@@ -58,6 +58,8 @@ const Home = (props) => {
   return (
     <div className="container movie-wrapper">
       <SeoConfig title="Welcome to the movie DB" />
+
+
       <div className="row">
         <div className="col-md-6">
           <Search handleSearch={onSearch} name="searchTerm" onChange={(e) => setSearch(e.target.value)} />
@@ -67,16 +69,20 @@ const Home = (props) => {
         </div>
       </div>
       <div className="row">
-        {movies.length > 0 ? movies.map(movie => {
+        {loading ? <div className="col-md-12"><Skeleton count={5} /></div> : null}
+        {loading === null && movies.length > 0 && movies.map(movie => {
           const { poster_path, title, release_date, overview, id, vote_average } = movie;
           return (
             <div className="col-md-6 mb-5" key={id}>
               <MoviesCard title={title} image={poster_path} release_date={release_date} overview={overview} vote_average={vote_average} />
             </div>
           )
-        }) : <div className="container">
+        })}
+        {movies.length === 0 && (
+          <div className="container">
             <h2>There are no movies that matched your query.</h2>
-          </div>}
+          </div>
+        )}
       </div>
       <div className="row">
         {movies.length > 0 && <PaginationMovie
@@ -86,6 +92,7 @@ const Home = (props) => {
           pageRangeDisplayed={5}
           onChange={handlePageClick}
         />}
+
       </div>
 
       <style jsx>{`
@@ -119,7 +126,8 @@ const mapStateToProps = state => ({
   movies: state.movies,
   total_pages: state.total_pages,
   isSearch: state.isSearch,
-  sortBy: state.sortBy
+  sortBy: state.sortBy,
+  loading: state.loading
 })
 
 export default connect(mapStateToProps)(Home)

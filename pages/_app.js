@@ -11,13 +11,19 @@ const initialState = {
     movies: null,
     total_pages: null,
     isSearch: null,
-    sortBy: null
+    sortBy: null,
+    loading: null
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'FETCH_MOVIES_START':
+            return {
+                ...state,
+                loading: 'isLoading'
+            }
         case 'FETCH_MOVIES':
-            return { ...state, movies: action.payload, total_pages: action.totalPages, isSearch: action.isSearch, sortBy: action.sortBy };
+            return { ...state, movies: action.payload, total_pages: action.totalPages, isSearch: action.isSearch, sortBy: action.sortBy, loading: null };
         default:
             return state
     }

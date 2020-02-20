@@ -1,7 +1,13 @@
 import axios from 'axios';
 import api from "utils/api";
+
+export const fetchStart = () => ({
+    type: 'FETCH_MOVIES_START'
+});
+
 export const fetchMovies = (isSearch, page, sort = '') => async dispatch => {
     // console.log(sort)
+    dispatch(fetchStart());
     try {
         const res = await axios({
             method: 'GET',
