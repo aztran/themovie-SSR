@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { useDispatch } from 'react-redux';
 import { fetchMovies } from '../action';
 import Select from 'components/Select';
+import SeoConfig from '../components/SeoConfig';
 
 
 const Home = (props) => {
@@ -33,19 +34,20 @@ const Home = (props) => {
   const [search, setSearch] = useState('');
   const [valuSort, setValueSort] = useState(Sorting[0].value)
 
-  const { movies, total_pages, isSearch } = props;
+  const { movies, total_pages, isSearch, sortBy } = props;
   const dispatch = useDispatch();
 
 
 
   const handlePageClick = data => {
     setPage(data);
-    dispatch(fetchMovies(search, data));
+    console.log(sortBy);
+    dispatch(fetchMovies(search, data, sortBy));
   };
 
   const onSearch = () => {
     setPage(1);
-    dispatch(fetchMovies(search, page));
+    dispatch(fetchMovies(search, page, sortBy));
   }
 
   const handleSort = event => {
@@ -54,13 +56,14 @@ const Home = (props) => {
   }
 
   return (
-    <div className="container home">
+    <div className="container movie-wrapper">
+      <SeoConfig title="Welcome to the movie DB" />
       <div className="row">
         <div className="col-md-6">
           <Search handleSearch={onSearch} name="searchTerm" onChange={(e) => setSearch(e.target.value)} />
         </div>
         <div className="col-md-6">
-          <Select lists={Sorting} onChange={handleSort} />
+          <Select lists={Sorting} onChange={handleSort} defaultValue={'0'} />
         </div>
       </div>
       <div className="row">
@@ -86,27 +89,14 @@ const Home = (props) => {
       </div>
 
       <style jsx>{`
-          .home {
+          .movie-wrapper {
             padding-top: 120px;
           }
 
           
     `}</style>
 
-      <style jsx global>{`
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-          Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-      }
 
-      * {
-        box-sizing: border-box;
-      }
-
-    `}</style>
     </div>
   )
 }
@@ -128,7 +118,8 @@ Home.getInitialProps = async ({ store, query: { page = 1 } }) => {
 const mapStateToProps = state => ({
   movies: state.movies,
   total_pages: state.total_pages,
-  isSearch: state.isSearch
+  isSearch: state.isSearch,
+  sortBy: state.sortBy
 })
 
 export default connect(mapStateToProps)(Home)

@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactPaginate from 'react-paginate';
 import Pagination from "react-js-pagination";
-// import "bootstrap/less/bootstrap.less";
 
 const PaginationMovie = (props) => {
     return (

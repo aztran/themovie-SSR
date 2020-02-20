@@ -1,14 +1,3 @@
-// export const fetchMovies = (movies, isSearch) => {
-//     let data = [];
-//     data = movies.data.results.filter(filter => { return filter !== null })
-//     // console.log(movies, isSearch);
-//     return {
-//         type: 'FETCH_MOVIES',
-//         payload: data,
-//         totalPages: movies.data.total_pages,
-//         isSearch: isSearch
-//     }
-// }
 import axios from 'axios';
 import api from "utils/api";
 export const fetchMovies = (isSearch, page, sort = '') => async dispatch => {
@@ -34,14 +23,12 @@ export const fetchMovies = (isSearch, page, sort = '') => async dispatch => {
             type: 'FETCH_MOVIES',
             payload: data,
             totalPages: res.data.total_pages,
-            isSearch: isSearch
+            isSearch: isSearch,
+            sortBy: sort
         })
         // console.log(dispatch)
 
     } catch (error) {
 
     }
-
-
-
 }
