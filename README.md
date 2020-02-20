@@ -1,5 +1,15 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app).
 
+
+This Web App was built with NEXT JS, bootstrap, redux, thunk and API from themoviedb.com 
+
+
+## Overview
+
+- HOME PAGE : list data including pagination, search & filter
+- LOGIN : Form Login with formik (design only)
+
+
 ## Getting Started
 
 First, run the development server:
